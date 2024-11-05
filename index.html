@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Oversize - Tu Estilo, Tu Talla</title>
+    <style>
+        /* Estilos base */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Estilos del encabezado */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        .logo {
+            height: 40px;
+        }
+        .nav-links a {
+            margin-left: 1rem;
+            color: #333;
+            text-decoration: none;
+        }
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #f00;
+            color: #fff;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.8rem;
+        }
+        /* Estilos del héroe */
+        .hero {
+            background-image: url('hero.png');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            text-align: center;
+            padding: 6rem 0;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        .btn {
+            background-color: #f00;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #d00;
+        }
+        /* Estilos de productos */
+        .products {
+            padding: 4rem 0;
+        }
+        .products h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .product-info {
+            padding: 1rem;
+        }
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .add-to-cart {
+            background-color: #f00;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .add-to-cart:hover {
+            background-color: #d00;
+        }
+        /* Estilos del carrito */
+        .cart-modal {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 400px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: -2px 0 4px rgba(0,0,0,0.1);
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        .cart-modal.open {
+            right: 0;
+        }
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        .cart-items {
+            padding: 1rem;
+            overflow-y: auto;
+            max-height: calc(100% - 150px);
+        }
+        .cart-item {
+            display: flex;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .cart-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        .cart-item-info {
+            flex-grow: 1;
+        }
+        .cart-item-title {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+        .cart-item-price {
+            color: #f00;
+        }
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+        .quantity-btn {
+            background: none;
+            border: 1px solid #ccc;
+            width: 24px;
+            height: 24px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        .cart-total {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background-color: #f8f8f8;
+            border-top: 1px solid #eee;
+        }
+        .cart-total-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .checkout-btn {
+            background-color: #f00;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .checkout-btn:hover {
+            background-color: #d00;
+        }
+        /* Estilos del pie de página */
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 2rem 0;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+        .footer-section h3 {
+            margin-bottom: 1rem;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        .footer-links a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .copyright {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #555;
+        }
+        /* Estilos para modales */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background-color: #fff;
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        /* Estilos para notificaciones */
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            padding: 1rem;
+            border-radius: 4px;
+            z-index: 1002;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .notification.show {
+            opacity: 1;
+        }
+        /* Estilos para el detalle del producto */
+        .product-detail-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .product-detail-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .product-detail-content {
+            background-color: #fff;
+            border-radius: 8px;
+            max-width: 1000px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .product-detail-body {
+            display: flex;
+            padding: 2rem;
+        }
+        .product-detail-images {
+            flex: 1;
+            margin-right: 2rem;
+        }
+        .product-detail-main-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+        .product-detail-thumbnails {
+            display: flex;
+            gap: 0.5rem;
+        }
+        .product-detail-thumbnail {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .product-detail-thumbnail.active {
+            border-color: rgb(0, 0, 0);
+        }
+        .product-detail-info {
+            flex: 1;
+        }
+        .product-detail-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        .product-detail-price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #f00;
+            margin-bottom: 1rem;
+        }
+        .product-detail-description {
+            margin-bottom: 1rem;
+        }
+        .product-detail-sizes {
+            margin-bottom: 1rem;
+        }
+        .size-option {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            margin-right: 0.5rem;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .size-option.selected {
+            background-color: rgb(0, 0, 0);
+            color: #fff;
+            border-color: rgb(0, 0, 0);
+        }
+        .product-detail-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .buy-now-btn, .add-to-cart-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .buy-now-btn {
+            background-color: rgb(0, 0, 0);
+            color: #fff;
+        }
+        .buy-now-btn:hover {
+            background-color: #d00;
+        }
+        .add-to-cart-btn {
+            background-color: #fff;
+            color: #f00;
+            border: 1px solid #f00;
+        }
+        .add-to-cart-btn:hover {
+            background-color: #fff5f5;
+        }
+        /* Estilos para el formulario de dirección */
+        .address-form {
+            display: grid;
+            gap: 1rem;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            margin-bottom: 0.5rem;
+        }
+        .form-group input {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-submit {
+            background-color: #f00;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .form-submit:hover {
+            background-color: #d00;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="container">
+            <nav>
+                <img src="aura.png" alt="Aura Logo" class="logo">
+                <div class="nav-links">
+                    <a href="#products">Productos</a>
+                    <a href="#" onclick="showAboutModal()">Sobre nosotros</a>
+                    <a href="#" onclick="showContactModal()">Contacto</a>
+                </div>
+                <div class="cart-icon" onclick="toggleCart()">
+                    🛒
+                    <span class="cart-count">0</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Aura: Tu Estilo, Tu Talla</h1>
+                <p>Camisas oversize personalizadas para expresar tu individualidad</p>
+                <a href="#products" class="btn">Ver productos</a>
+            </div>
+        </section>
+
+        <section id="products" class="products">
+            <div class="container">
+                <h2>Nuestras Camisas</h2>
+                <div class="product-grid" id="productGrid">
+                    <!-- Los productos se cargarán aquí dinámicamente -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-header">
+            <h2>Carrito</h2>
+            <button class="close-btn" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Los items del carrito se agregarán aquí dinámicamente -->
+        </div>
+        <div class="cart-total">
+            <p class="cart-total-price">Total: $0.00</p>
+            <button class="checkout-btn" onclick="showAddressModal()">Proceder al pago</button>
+        </div>
+    </div>
+
+    <div class="modal" id="aboutModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Sobre Nosotros</h2>
+                <button class="close-btn" onclick="closeModal('aboutModal')">&times;</button>
+            </div>
+            <p>En Aura, nos apasiona ofrecer camisas oversize personalizadas que reflejen tu estilo único. Fundada en 2022, nuestra empresa se dedica a crear prendas cómodas y versátiles que te permitan expresar tu individualidad.</p>
+            <p>Nuestro equipo de diseñadores trabaja con materiales de alta calidad y técnicas de impresión avanzadas para asegurar que cada camisa sea una obra de arte. Ya sea que prefieras un diseño minimalista o una explosión de color, en Aura encontrarás la camisa perfecta para ti.</p>
+            <p>Nos enorgullece ofrecer un proceso de personalización sencillo y opciones de tallas inclusivas. Creemos que la moda debe ser accesible para todos, y nuestras camisas oversize son la prueba de ello.</p>
+            <p>Únete a la comunidad Aura y descubre cómo una simple camisa puede transformar tu guardarropa y tu confianza.</p>
+        </div>
+    </div>
+
+    <div class="modal" id="contactModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Contacto</h2>
+                <button class="close-btn" onclick="closeModal('contactModal')">&times;</button>
+            </div>
+            <p>Teléfono: (123) 456-7890</p>
+            <p>Email: info@aura.com</p>
+            <p>Dirección: 123 Calle Moda, Ciudad Estilo, 12345</p>
+            <h3>Redes Sociales</h3>
+            <p>
+                <a href="https://facebook.com/aura" target="_blank">Facebook</a> |
+                <a href="https://instagram.com/aura" target="_blank">Instagram</a> |
+                <a href="https://tiktok.com/@aura" target="_blank">TikTok</a>
+            </p>
+            <h3>Envíanos un mensaje</h3>
+            <form id="contactForm">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Mensaje:</label>
+                <textarea id="message" name="message" required></textarea>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addressModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Dirección de Envío</h2>
+                <button class="close-btn" onclick="closeModal('addressModal')">&times;</button>
+            </div>
+            <form id="addressForm" class="address-form">
+                <div class="form-group">
+                    <label for="fullName">Nombre completo:</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="street">Calle y número:</label>
+                    <input type="text" id="street" name="street" required>
+                </div>
+                <div class="form-group">
+                    <label for="city">Ciudad:</label>
+                    <input type="text" id="city" name="city" required>
+                </div>
+                <div class="form-group">
+                    <label for="state">Estado:</label>
+                    <input type="text" id="state" name="state" required>
+                </div>
+                <div class="form-group">
+                    <label for="zipCode">Código postal:</label>
+                    <input type="text" id="zipCode" name="zipCode" required>
+                </div>
+                <button type="submit" class="form-submit">Confirmar pedido</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="product-detail-modal" id="productDetailModal">
+        <div class="product-detail-content">
+            <div class="product-detail-header">
+                <h2 class="modal-title">Detalle del Producto</h2>
+                <button class="close-btn" onclick="closeProductDetail()">&times;</button>
+            </div>
+            <div class="product-detail-body">
+                <div class="product-detail-images">
+                    <img src="" alt="" class="product-detail-main-image" id="productDetailMainImage">
+                    <div class="product-detail-thumbnails" id="productDetailThumbnails">
+                        <!-- Las miniaturas se cargarán aquí dinámicamente -->
+                    </div>
+                </div>
+                <div class="product-detail-info">
+                    <h2 class="product-detail-title" id="productDetailTitle"></h2>
+                    <p class="product-detail-price" id="productDetailPrice"></p>
+                    <p class="product-detail-description" id="productDetailDescription"></p>
+                    <div class="product-detail-sizes" id="productDetailSizes">
+                        <!-- Las opciones de talla se cargarán aquí dinámicamente -->
+                    </div>
+                    <div class="product-detail-actions">
+                        <button class="buy-now-btn" onclick="buyNow()">Comprar ahora</button>
+                        <button class="add-to-cart-btn" onclick="addToCartFromDetail()">Agregar al carrito</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Acerca de Aura</h3>
+                    <p>Ofrecemos las mejores camisas oversize personalizadas para expresar tu estilo único.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#products">Productos</a></li>
+                        <li><a href="#" onclick="showAboutModal()">Sobre nosotros</a></li>
+                        <li><a href="#" onclick="showContactModal()">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contáctanos</h3>
+                    <p>Email: info@aura.com</p>
+                    <p>Teléfono: (123) 456-7890</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2024 Aura. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Datos de productos
+        const products = [
+            {
+                id: 1,
+                name: "Camisa Oversize Negra",
+                price: 499.99,
+                image: "/placeholder.svg?height=250&width=250",
+                description: "Nuestra camisa oversize negra es la pieza perfecta para cualquier ocasión. Confeccionada con algodón suave y transpirable, ofrece un ajuste holgado y cómodo que se adapta a todos los tipos de cuerpo.",
+                rating: 4.7,
+                reviews: 123,
+                images: [
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600"
+                ],
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 10,
+                shipping: "Envío gratis",
+                deliveryDate: "Llega entre el martes y el jueves"
+            },
+            {
+                id: 2,
+                name: "Camisa Oversize Beig",
+                price: 499.99,
+                image: "/placeholder.svg?height=250&width=250",
+                description: "Nuestra camisa oversize beig es la pieza versátil que necesitas. Su tono neutro la hace fácil de combinar, mientras que su corte oversize proporciona comodidad y estilo.",
+                rating: 4.5,
+                reviews: 98,
+                images: [
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600"
+                ],
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 15,
+                shipping: "Envío gratis",
+                deliveryDate: "Llega entre el miércoles y el viernes"
+            },
+            {
+                id: 3,
+                name: "Camisa Oversize Blanca",
+                price: 499.99,
+                image: "/placeholder.svg?height=250&width=250",
+                description: "La camisa oversize blanca es un básico imprescindible. Su diseño limpio y su ajuste holgado la convierten en una pieza versátil para cualquier guardarropa.",
+                rating: 4.8,
+                reviews: 145,
+                images: [
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600"
+                ],
+                sizes: ['S', 'M', 'L', 'XL'],
+                stock: 20,
+                shipping: "Envío gratis",
+                deliveryDate: "Llega entre el lunes y el miércoles"
+            },
+            {
+                id: 4,
+                name: "Camisa Oversize Cafe",
+                price: 499.99,
+                image: "/placeholder.svg?height=250&width=250",
+                description: "Nuestra camisa oversize café aporta un toque de sofisticación a tu look. Su tono cálido y su corte relajado la hacen perfecta para ocasiones casuales o semi-formales.",
+                rating: 4.6,
+                reviews: 87,
+                images: [
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600",
+                    "/placeholder.svg?height=600&width=600"
+                ],
+                sizes: [  'L', 'XL'],
+                stock: 12,
+                shipping: "Envío gratis",
+                deliveryDate: "Llega entre el jueves y el sábado"
+            }
+        ];
+
+        let cart = [];
+        let selectedProduct = null;
+        let selectedSize = null;
+
+        // Cargar productos
+        function loadProducts() {
+            const productGrid = document.getElementById('productGrid');
+            productGrid.innerHTML = '';
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <img src="${product.image}" alt="${product.name}" onclick="showProductDetail(${product.id})">
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-price">$${product.price.toFixed(2)}</p>
+                        <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${product.id})">Añadir al carrito</button>
+                    </div>
+                `;
+                productCard.onclick = () => showProductDetail(product.id);
+                productGrid.appendChild(productCard);
+            });
+        }
+
+        // Mostrar detalle del producto
+        function showProductDetail(productId) {
+            selectedProduct = products.find(p => p.id === productId);
+            if (selectedProduct) {
+                document.getElementById('productDetailTitle').textContent = selectedProduct.name;
+                document.getElementById('productDetailPrice').textContent = `$${selectedProduct.price.toFixed(2)}`;
+                document.getElementById('productDetailDescription').textContent = selectedProduct.description;
+                document.getElementById('productDetailMainImage').src = selectedProduct.images[0];
+
+                const thumbnailsContainer = document.getElementById('productDetailThumbnails');
+                thumbnailsContainer.innerHTML = '';
+                selectedProduct.images.forEach((image, index) => {
+                    const thumbnail = document.createElement('img');
+                    thumbnail.src = image;
+                    thumbnail.alt = `${selectedProduct.name} - Imagen ${index + 1}`;
+                    thumbnail.className = 'product-detail-thumbnail';
+                    if (index === 0) thumbnail.classList.add('active');
+                    thumbnail.onclick = () => changeMainImage(index);
+                    thumbnailsContainer.appendChild(thumbnail);
+                });
+
+                const sizesContainer = document.getElementById('productDetailSizes');
+                sizesContainer.innerHTML = '';
+                selectedProduct.sizes.forEach(size => {
+                    const sizeOption = document.createElement('span');
+                    sizeOption.className = 'size-option';
+                    sizeOption.textContent = size;
+                    sizeOption.onclick = () => selectSize(size);
+                    sizesContainer.appendChild(sizeOption);
+                });
+
+                document.getElementById('productDetailModal').classList.add('open');
+            }
+        }
+
+        // Cambiar imagen principal
+        function changeMainImage(index) {
+            document.getElementById('productDetailMainImage').src = selectedProduct.images[index];
+            document.querySelectorAll('.product-detail-thumbnail').forEach((thumb, idx) => {
+                thumb.classList.toggle('active', idx === index);
+            });
+        }
+
+        // Seleccionar talla
+        function selectSize(size) {
+            selectedSize = size;
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.classList.toggle('selected', option.textContent === size);
+            });
+        }
+
+        // Cerrar detalle del producto
+        function closeProductDetail() {
+            document.getElementById('productDetailModal').classList.remove('open');
+            selectedProduct = null;
+            selectedSize = null;
+        }
+
+        // Añadir al carrito desde el detalle del producto
+        function addToCartFromDetail() {
+            if (selectedProduct && selectedSize) {
+                addToCart(selectedProduct.id, selectedSize);
+                closeProductDetail();
+            } else {
+                showNotification('Por favor, selecciona una talla');
+            }
+        }
+
+        // Comprar ahora
+        function buyNow() {
+            if (selectedProduct && selectedSize) {
+                addToCart(selectedProduct.id, selectedSize);
+                closeProductDetail();
+                showAddressModal();
+            } else {
+                showNotification('Por favor, selecciona una talla');
+            }
+        }
+
+        // Añadir al carrito
+        function addToCart(productId, size = 'M') {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                const cartItem = cart.find(item => item.id === productId && item.size === size);
+                if (cartItem) {
+                    cartItem.quantity++;
+                } else {
+                    cart.push({ ...product, quantity: 1, size: size });
+                }
+                updateCartCount();
+                showNotification(`${product.name} (Talla ${size}) añadido al carrito`);
+            }
+        }
+
+        // Actualizar contador del carrito
+        function updateCartCount() {
+            const cartCount = document.querySelector('.cart-count');
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            cartCount.textContent = totalItems;
+        }
+
+        // Mostrar notificación
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+                        notification.textContent = message;
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        // Alternar visibilidad del carrito
+        function toggleCart() {
+            const cartModal = document.getElementById('cartModal');
+            cartModal.classList.toggle('open');
+            if (cartModal.classList.contains('open')) {
+                updateCartItems();
+            }
+        }
+
+        // Actualizar items del carrito
+        function updateCartItems() {
+            const cartItems = document.getElementById('cartItems');
+            const cartTotalPrice = document.querySelector('.cart-total-price');
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="cart-item-info">
+                        <h3 class="cart-item-title">${item.name} (Talla ${item.size})</h3>
+                        <p class="cart-item-price">$${item.price.toFixed(2)}</p>
+                        <div class="cart-item-quantity">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, '${item.size}', -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.id}, '${item.size}', 1)">+</button>
+                        </div>
+                    </div>
+                    <button class="close-btn" onclick="removeFromCart(${item.id}, '${item.size}')">&times;</button>
+                `;
+                cartItems.appendChild(cartItem);
+                total += item.price * item.quantity;
+            });
+
+            cartTotalPrice.textContent = `Total: $${total.toFixed(2)}`;
+        }
+
+        // Actualizar cantidad de un item en el carrito
+        function updateQuantity(productId, size, change) {
+            const item = cart.find(item => item.id === productId && item.size === size);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(productId, size);
+                } else {
+                    updateCartItems();
+                    updateCartCount();
+                }
+            }
+        }
+
+        // Remover item del carrito
+        function removeFromCart(productId, size) {
+            cart = cart.filter(item => !(item.id === productId && item.size === size));
+            updateCartItems();
+            updateCartCount();
+        }
+
+        // Mostrar modal
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('open');
+        }
+
+        // Cerrar modal
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('open');
+        }
+
+        // Mostrar modal "Sobre nosotros"
+        function showAboutModal() {
+            showModal('aboutModal');
+        }
+
+        // Mostrar modal de contacto
+        function showContactModal() {
+            showModal('contactModal');
+        }
+
+        // Mostrar modal de dirección
+        function showAddressModal() {
+            document.getElementById('addressModal').classList.add('open');
+        }
+
+        // Manejar envío del formulario de contacto
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Aquí iría la lógica para enviar el formulario
+            showNotification('Mensaje enviado. Gracias por contactarnos!');
+            closeModal('contactModal');
+        });
+
+        // Manejar envío del formulario de dirección
+        document.getElementById('addressForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Recopilar información del pedido
+            const fullName = document.getElementById('fullName').value;
+            const street = document.getElementById('street').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zipCode = document.getElementById('zipCode').value;
+
+            // Crear mensaje para WhatsApp
+            let message = `Nuevo pedido:
+
+`;
+            message += `Nombre: ${fullName}
+`;
+            message += `Dirección: ${street}, ${city}, ${state} ${zipCode}
+
+`;
+            message += `Productos:
+`;
+            cart.forEach(item => {
+                message += `- ${item.name} (Talla ${item.size}): ${item.quantity} x $${item.price.toFixed(2)}
+`;
+            });
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            message += `
+Total: $${total.toFixed(2)}`;
+
+            // Codificar el mensaje para la URL
+            const encodedMessage = encodeURIComponent(message);
+
+            // Crear la URL de la imagen del primer producto en el carrito
+            const firstProductImage = cart.length > 0 ? cart[0].image : '';
+            const imageUrl = encodeURIComponent(firstProductImage);
+
+            // Abrir WhatsApp con el mensaje y la imagen
+            window.open(`https://wa.me/2223836032?text=${encodedMessage}&image=${imageUrl}`, '_blank');
+
+            // Limpiar el carrito y cerrar modales
+            cart = [];
+            updateCartCount();
+            closeModal('addressModal');
+            toggleCart();
+            showNotification('Pedido enviado por WhatsApp. ¡Gracias por tu compra!');
+        });
+
+        // Cargar productos al iniciar la página
+        window.onload = loadProducts;
+    </script>
+</body>
+</html>
